@@ -1,0 +1,7 @@
+Pillow
+huggingface-hub
+numpy
+ollama
+openai
+torch
+transformers

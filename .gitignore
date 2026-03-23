@@ -1,0 +1,62 @@
+# ============================================================
+# Secrets & credentials — NEVER commit these
+# ============================================================
+.env
+*.token
+*.key
+secrets/
+credentials/
+
+# ============================================================
+# Python virtual environments
+# ============================================================
+.venv/
+venv/
+env/
+ENV/
+
+# ============================================================
+# Python build / cache artefacts
+# ============================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.so
+.Python
+
+# ============================================================
+# Jupyter notebook checkpoints
+# ============================================================
+.ipynb_checkpoints/
+
+# ============================================================
+# IDE / Editor
+# ============================================================
+.claude/
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-workspace
+
+# ============================================================
+# OS generated files
+# ============================================================
+Thumbs.db
+.DS_Store
+desktop.ini
+ehthumbs.db
+
+# ============================================================
+# LabelBot output directories (generated at runtime)
+# ============================================================
+output/
+*_output/
+*_classified*/
+classification_results.json
+classification_report.txt
+vlm_classification_results.json
+vlm_classification_report.txt
