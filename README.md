@@ -1,12 +1,14 @@
-# 🤖 LabelBot — Auto Image Classifier & Annotator
+# 🐔🥚 ChickenOrEgg — Auto Image Classifier & Annotator
+
+> *"Which came first, the label or the annotation?"*
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/)
 [![Ollama](https://img.shields.io/badge/Powered%20by-Ollama-green.svg)](https://ollama.com/)
 
-LabelBot is a lightweight, **fully local** toolkit for automatically classifying and annotating images using open-source Vision-Language Models (VLMs) and Meta's Segment Anything Model 3 (SAM3). No cloud API required — everything runs on your own machine.
+ChickenOrEgg is a lightweight, **fully local** toolkit for automatically classifying and annotating images using open-source Vision-Language Models (VLMs) and Meta's Segment Anything Model 3 (SAM3). No cloud API required — everything runs on your own machine.
 
-Originally built for newspaper detection, LabelBot is now a **general-purpose** tool that works for any two-class image sorting task — receipts, product photos, wildlife shots, documents, you name it.
+Originally built for newspaper detection, ChickenOrEgg is now a **general-purpose** tool that works for any two-class image sorting task — receipts, product photos, wildlife shots, documents, you name it.
 
 ---
 
@@ -24,7 +26,7 @@ Originally built for newspaper detection, LabelBot is now a **general-purpose** 
 ## 📁 Project Structure
 
 ```
-LabelBot/
+ChickenOrEgg/
 ├── classifier/
 │   ├── template_classifier.py   ← Generic classifier (START HERE)
 │   ├── image_dis.py             ← Original newspaper-specific classifier
@@ -50,8 +52,8 @@ LabelBot/
 ### 2. Install
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/LabelBot.git
-cd LabelBot
+git clone https://github.com/Jinsenloh/ChickenOrEgg.git
+cd ChickenOrEgg
 
 python -m venv .venv
 source .venv/bin/activate        # Linux / macOS
