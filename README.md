@@ -8,7 +8,7 @@
 
 ChickenOrEgg is a lightweight, **fully local** toolkit for automatically classifying and annotating images using open-source Vision-Language Models (VLMs) and Meta's Segment Anything Model 3 (SAM3). No cloud API required — everything runs on your own machine.
 
-Originally built for newspaper detection, ChickenOrEgg is now a **general-purpose** tool that works for any two-class image sorting task — receipts, product photos, wildlife shots, documents, you name it.
+A **general-purpose** tool that works for any two-class image sorting task — receipts, product photos, wildlife shots, documents, you name it.
 
 ---
 
@@ -29,8 +29,7 @@ Originally built for newspaper detection, ChickenOrEgg is now a **general-purpos
 ChickenOrEgg/
 ├── classifier/
 │   ├── template_classifier.py   ← Generic classifier (START HERE)
-│   ├── image_dis.py             ← Original newspaper-specific classifier
-│   └── examples/                ← Sample images for few-shot prompting
+│   └── examples/                ← Put your few-shot example images here
 ├── annotation/
 │   ├── sam3_generic_annotator_template_colab.ipynb   ← SAM3 (Colab)
 │   └── sam3_generic_annotator_template_local.ipynb   ← SAM3 (Local)
@@ -106,8 +105,8 @@ python classifier/template_classifier.py \
     --output-dir ./receipts_sorted \
     --target-class "Receipt" \
     --other-class "Not Receipt" \
-    --example-class-a ./classifier/examples/paper305.jpg ./classifier/examples/paper307.jpg \
-    --example-class-b ./classifier/examples/paper3.jpg ./classifier/examples/paper75.jpg
+    --example-class-a ./classifier/examples/receipt1.jpg ./classifier/examples/receipt2.jpg \
+    --example-class-b ./classifier/examples/other1.jpg ./classifier/examples/other2.jpg
 ```
 
 **Use a different Ollama model:**
@@ -122,14 +121,6 @@ python classifier/template_classifier.py \
 ```
 
 **Tip:** Open `template_classifier.py` and edit the `_build_system_prompt()` method to add visual characteristics specific to your classes — this significantly improves accuracy.
-
-### Newspaper Classifier (original)
-
-```bash
-python classifier/image_dis.py \
-    --source-dir /path/to/images \
-    --output-dir /path/to/output
-```
 
 ---
 

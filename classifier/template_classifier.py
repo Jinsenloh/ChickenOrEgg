@@ -1,5 +1,5 @@
 """
-LabelBot - Generic Image Classifier (Ollama Edition)
+ChickenOrEgg - Generic Image Classifier (Ollama Edition)
 =====================================================
 Classify any folder of images into two categories using a local
 Vision-Language Model (VLM) running via Ollama.
@@ -332,7 +332,7 @@ class GenericVLMClassifier:
 
         sep = "=" * 80
         print(sep)
-        print(f"  LabelBot  |  {self.target_class_name.upper()}  vs  {self.other_class_name.upper()}")
+        print(f"  ChickenOrEgg  |  {self.target_class_name.upper()}  vs  {self.other_class_name.upper()}")
         print(sep)
         print(f"  Source  : {self.source_dir}")
         print(f"  Output  : {self.output_dir}")
@@ -402,7 +402,7 @@ class GenericVLMClassifier:
         report_path = self.output_dir / "classification_report.txt"
         lines = [
             "=" * 80,
-            "LabelBot Classification Report",
+            "ChickenOrEgg Classification Report",
             f"Generated : {ts}",
             f"Model     : {self.model}",
             f"Classes   : '{tgt}'  vs  '{oth}'",
@@ -447,7 +447,7 @@ class GenericVLMClassifier:
         # Console summary
         sep = "=" * 80
         print(f"\n{sep}")
-        print("  LabelBot — Done!")
+        print("  ChickenOrEgg — Done!")
         print(sep)
         print(f"  {tgt}: {stats['class_a_count']}")
         print(f"  {oth}: {stats['class_b_count']}")
@@ -467,7 +467,7 @@ class GenericVLMClassifier:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="LabelBot — Generic two-class image classifier powered by Ollama VLMs.",
+        description="ChickenOrEgg — Generic two-class image classifier powered by Ollama VLMs.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__,
     )
@@ -520,7 +520,7 @@ def main():
         return
 
     print("\n" + "=" * 80)
-    print("  LabelBot — Generic Image Classifier (Ollama)")
+    print("  ChickenOrEgg — Generic Image Classifier (Ollama)")
     print("=" * 80)
     print(f"  Source      : {args.source_dir}")
     print(f"  Output      : {args.output_dir}")
