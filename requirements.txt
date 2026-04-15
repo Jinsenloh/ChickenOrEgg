@@ -2,6 +2,7 @@ Pillow
 huggingface-hub
 numpy
 ollama
+pyyaml
 openai
 torch
 transformers

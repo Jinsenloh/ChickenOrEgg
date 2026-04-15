@@ -1,0 +1,33 @@
+# ============================================================
+# ChickenOrEgg — Configuration File
+# ============================================================
+# Edit the values below and run:
+#   python classifier/template_classifier.py --config config.yaml
+# ============================================================
+
+# ── Directories ──────────────────────────────────────────────
+source_dir: "./my_images"           # Folder containing images to classify
+output_dir: "./output"              # Where sorted images and reports are saved
+
+# ── Classes ──────────────────────────────────────────────────
+target_class: "Pizza"               # Label for the POSITIVE class
+other_class: "Not Pizza"            # Label for the NEGATIVE class
+
+# ── Model ────────────────────────────────────────────────────
+model: "qwen2.5vl:7b"              # Any Ollama vision model tag
+                                    # Examples: llava:13b, llava:7b, qwen2.5vl:3b
+
+# ── File Filter (optional) ──────────────────────────────────
+# file_pattern: "*.jpg"             # Uncomment to only process specific files
+
+# ── Few-Shot Examples (optional) ─────────────────────────────
+# Add your own example images to classifier/examples/ and list them here
+# example_class_a:                  # Positive examples
+#   - "./classifier/examples/pizza1.jpg"
+#   - "./classifier/examples/pizza2.jpg"
+# example_class_b:                  # Negative examples
+#   - "./classifier/examples/not_pizza1.jpg"
+#   - "./classifier/examples/not_pizza2.jpg"
+
+# ── Skip Confirmation ────────────────────────────────────────
+yes: false                          # Set to true to skip the confirmation prompt

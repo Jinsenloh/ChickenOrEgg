@@ -33,6 +33,7 @@ ChickenOrEgg/
 ├── annotation/
 │   ├── sam3_generic_annotator_template_colab.ipynb   ← SAM3 (Colab)
 │   └── sam3_generic_annotator_template_local.ipynb   ← SAM3 (Local)
+├── config.yaml                  ← Edit this to configure your run
 ├── requirements.txt
 ├── .env.example
 └── LICENSE
@@ -73,7 +74,15 @@ cp .env.example .env
 
 ## 🎯 Usage: Classification
 
-### Generic Classifier (recommended)
+### Option A: Use the config file (easiest)
+
+Edit `config.yaml` with your settings, then run:
+
+```bash
+python classifier/template_classifier.py --config config.yaml
+```
+
+### Option B: Use CLI flags
 
 ```bash
 python classifier/template_classifier.py \
@@ -83,10 +92,16 @@ python classifier/template_classifier.py \
     --other-class "Not Pizza"
 ```
 
+> CLI flags override config file values, so you can mix both:
+> ```bash
+> python classifier/template_classifier.py --config config.yaml --model llava:13b
+> ```
+
 **All options:**
 
 | Flag | Description | Default |
 |---|---|---|
+| `--config` | Path to YAML config file | — |
 | `--source-dir` | Folder of images to classify | *(required)* |
 | `--output-dir` | Where to save results | `./output` |
 | `--target-class` | Label for the positive class | `"Target Object"` |
@@ -107,17 +122,6 @@ python classifier/template_classifier.py \
     --other-class "Not Receipt" \
     --example-class-a ./classifier/examples/receipt1.jpg ./classifier/examples/receipt2.jpg \
     --example-class-b ./classifier/examples/other1.jpg ./classifier/examples/other2.jpg
-```
-
-**Use a different Ollama model:**
-
-```bash
-python classifier/template_classifier.py \
-    --source-dir ./images \
-    --output-dir ./output \
-    --target-class "Cat" \
-    --other-class "Not Cat" \
-    --model llava:13b
 ```
 
 **Tip:** Open `template_classifier.py` and edit the `_build_system_prompt()` method to add visual characteristics specific to your classes — this significantly improves accuracy.

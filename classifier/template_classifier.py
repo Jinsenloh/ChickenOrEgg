@@ -55,6 +55,7 @@ import time
 from datetime import datetime
 from pathlib import Path
 
+import yaml
 from PIL import Image
 from ollama import chat
 
@@ -472,23 +473,27 @@ def main():
         epilog=__doc__,
     )
     parser.add_argument(
-        "--source-dir", required=True,
+        "--config", default=None,
+        help="Path to a YAML config file (e.g. config.yaml). CLI flags override config values.",
+    )
+    parser.add_argument(
+        "--source-dir",
         help="Directory containing images to classify.",
     )
     parser.add_argument(
-        "--output-dir", default="./output",
+        "--output-dir", default=None,
         help="Directory to save sorted images and reports. (default: ./output)",
     )
     parser.add_argument(
-        "--target-class", default="Target Object",
+        "--target-class", default=None,
         help="Label for the POSITIVE class  (e.g. 'Pizza').",
     )
     parser.add_argument(
-        "--other-class", default="Other Object",
+        "--other-class", default=None,
         help="Label for the NEGATIVE class  (e.g. 'Not Pizza').",
     )
     parser.add_argument(
-        "--model", default="qwen2.5vl:7b",
+        "--model", default=None,
         help="Ollama vision model to use. (default: qwen2.5vl:7b)",
     )
     parser.add_argument(
@@ -500,12 +505,12 @@ def main():
         ),
     )
     parser.add_argument(
-        "--example-class-a", nargs="*", default=[],
+        "--example-class-a", nargs="*", default=None,
         metavar="PATH",
         help="Paths to positive-class example images for few-shot prompting.",
     )
     parser.add_argument(
-        "--example-class-b", nargs="*", default=[],
+        "--example-class-b", nargs="*", default=None,
         metavar="PATH",
         help="Paths to negative-class example images for few-shot prompting.",
     )
@@ -515,38 +520,82 @@ def main():
     )
     args = parser.parse_args()
 
-    if not os.path.isdir(args.source_dir):
-        print(f"ERROR: source directory not found: {args.source_dir}")
+    # ── Load YAML config and merge with CLI flags ──
+    # Defaults
+    cfg = {
+        "source_dir": None,
+        "output_dir": "./output",
+        "target_class": "Target Object",
+        "other_class": "Other Object",
+        "model": "qwen2.5vl:7b",
+        "file_pattern": None,
+        "example_class_a": [],
+        "example_class_b": [],
+        "yes": False,
+    }
+
+    if args.config:
+        with open(args.config, "r", encoding="utf-8") as f:
+            file_cfg = yaml.safe_load(f) or {}
+        cfg.update({k: v for k, v in file_cfg.items() if v is not None})
+
+    # CLI flags override config values
+    if args.source_dir is not None:
+        cfg["source_dir"] = args.source_dir
+    if args.output_dir is not None:
+        cfg["output_dir"] = args.output_dir
+    if args.target_class is not None:
+        cfg["target_class"] = args.target_class
+    if args.other_class is not None:
+        cfg["other_class"] = args.other_class
+    if args.model is not None:
+        cfg["model"] = args.model
+    if args.file_pattern is not None:
+        cfg["file_pattern"] = args.file_pattern
+    if args.example_class_a is not None:
+        cfg["example_class_a"] = args.example_class_a
+    if args.example_class_b is not None:
+        cfg["example_class_b"] = args.example_class_b
+    if args.yes:
+        cfg["yes"] = True
+
+    if not cfg["source_dir"]:
+        parser.error("--source-dir is required (via CLI or config.yaml)")
+
+    if not os.path.isdir(cfg["source_dir"]):
+        print(f"ERROR: source directory not found: {cfg['source_dir']}")
         return
 
     print("\n" + "=" * 80)
     print("  ChickenOrEgg — Generic Image Classifier (Ollama)")
     print("=" * 80)
-    print(f"  Source      : {args.source_dir}")
-    print(f"  Output      : {args.output_dir}")
-    print(f"  Target class: {args.target_class}")
-    print(f"  Other class : {args.other_class}")
-    print(f"  Model       : {args.model}")
-    print(f"  File pattern: {args.file_pattern or 'all image types'}")
+    print(f"  Source      : {cfg['source_dir']}")
+    print(f"  Output      : {cfg['output_dir']}")
+    print(f"  Target class: {cfg['target_class']}")
+    print(f"  Other class : {cfg['other_class']}")
+    print(f"  Model       : {cfg['model']}")
+    print(f"  File pattern: {cfg['file_pattern'] or 'all image types'}")
+    if cfg["example_class_a"] or cfg["example_class_b"]:
+        print(f"  Few-shot    : +{len(cfg['example_class_a'])} positive, +{len(cfg['example_class_b'])} negative")
     print()
 
-    if not args.yes:
+    if not cfg["yes"]:
         answer = input("Start classification? (yes/no): ").strip().lower()
         if answer not in ("yes", "y"):
             print("Cancelled.")
             return
 
     classifier = GenericVLMClassifier(
-        source_dir=args.source_dir,
-        output_dir=args.output_dir,
-        target_class_name=args.target_class,
-        other_class_name=args.other_class,
-        model=args.model,
-        example_class_a_paths=args.example_class_a,
-        example_class_b_paths=args.example_class_b,
+        source_dir=cfg["source_dir"],
+        output_dir=cfg["output_dir"],
+        target_class_name=cfg["target_class"],
+        other_class_name=cfg["other_class"],
+        model=cfg["model"],
+        example_class_a_paths=cfg["example_class_a"],
+        example_class_b_paths=cfg["example_class_b"],
     )
 
-    if classifier.process_images(file_pattern=args.file_pattern):
+    if classifier.process_images(file_pattern=cfg["file_pattern"]):
         classifier.save_results()
         print("\nAll done!")
     else:
